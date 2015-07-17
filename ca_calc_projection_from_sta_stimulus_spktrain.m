@@ -40,18 +40,16 @@ end
 
 % Calculate stimulus projection onto filter
 
-
 [nfreqs, nlags] = size(v); % # frequencies, # time bins
-
 ntrials = length(spktrain);
+xraw = zeros(length(spktrain), 1);
 
-xraw = zeros(length(nlags:ntrials), 1);
-
-
+% Get projection values, taking into account the lag of the filter v
+% The first nlags-1 values of xraw will be zero since these can't be
+% computed because of the time duration of v
 for i = nlags:ntrials
    xraw(i) =  sum( sum ( stimulus( :, i-nlags+1:i ) .* v ) ); % inner product
 end % (for i)
-
 
 xprior = xraw ./ std(xraw); % scale to get units of standard deviation
 xposterior = xprior( spktrain > 0 ); % includes only posterior

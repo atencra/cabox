@@ -36,6 +36,16 @@ function [stimstr] = ca_get_ripple_noise_stimulus(abspath, rn, dft, dff)
 % stimstr also holds the parameter and matrix file names that were used
 % to obtain the stimulus data.
 %
+% Note: the function assumes that the Ripple stimuli are in 1 of 3 
+% folder:
+% 
+%     abspath1 = 'C:\Users\craig\Data\Ripple_Noise';
+%     abspath2 = 'C:\Users\craig\Ripple_Noise';
+%     abspath3 = 'D:\Ripple_Noise';
+% 
+% If the stimuli are in neither of these functions, then the program
+% will stop executing.
+%
 % caa 1/27/15
 
 
@@ -44,11 +54,14 @@ narginchk(0,4);
 if ( nargin == 0 )
     abspath1 = 'C:\Users\craig\Data\Ripple_Noise';
     abspath2 = 'C:\Users\craig\Ripple_Noise';
+    abspath3 = 'D:\Ripple_Noise';
 
     if ( exist(abspath1, 'dir') )
         abspath = abspath1;
     elseif ( exist(abspath2, 'dir') )
         abspath = abspath2;
+    elseif ( exist(abspath3, 'dir') )
+        abspath = abspath3;
     else
         error('Wrong absolute path to ripple noise files.');
     end
@@ -61,11 +74,14 @@ end
 if ( nargin > 0 && isempty(abspath) )
     abspath1 = 'C:\Users\craig\Data\Ripple_Noise';
     abspath2 = 'C:\Users\craig\Ripple_Noise';
+    abspath3 = 'D:\Ripple_Noise';
 
     if ( exist(abspath1, 'dir') )
         abspath = abspath1;
     elseif ( exist(abspath2, 'dir') )
         abspath = abspath2;
+    elseif ( exist(abspath3, 'dir') )
+        abspath = abspath3;
     else
         error('Wrong absolute path to ripple noise files.');
     end
