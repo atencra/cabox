@@ -112,7 +112,12 @@ for i = 1:size(spktrain_matrix, 1)
     thr = linspace(0, 1, 500);
     [locatorPredNoisy] = noiseFreeSpikePrediction(probPred, locator, thr);
 
-    [sum(locator) sum(locatorPred) sum(locatorPredNoisy)]
+    percent = 0.5;
+    [locatorRand, ratio] = noiseFreeAddSpikesSpikePrediction(locator, locatorPred, percent)
+
+    [sum(locator) sum(locatorPred) sum(locatorPredNoisy) sum(locatorRand)]
+
+    
 
 
     % For comparison, calculate STA from predicted spikes
@@ -120,8 +125,11 @@ for i = 1:size(spktrain_matrix, 1)
 
     staPredNoisy = ca_calc_sta_from_stimulus_spktrain(stimulus, locatorPredNoisy, nlags);
 
-    plotSurrogateSpktrainSTA(sta, staPred, staPredNoisy);
-    plotSurrogateSpktrainISI(locator, locatorPred, locatorPredNoisy);
+    staPredRand = ca_calc_sta_from_stimulus_spktrain(stimulus, locatorRand, nlags);
+
+
+    plotSurrogateSpktrainSTA(sta, staPred, staPredRand);
+    plotSurrogateSpktrainISI(locator, locatorPred, locatorRand);
 
 pause
 
@@ -146,8 +154,15 @@ pause
 %     close(hf);
 
     stamat(i,:) = sta(:)';
+
     stamatPred(i,:) = staPred(:)';
+    stamatPredNoisy(i,:) = staPredNoisy(:)';
+    stamatPredRand(i,:) = staPredRand(:)';
+
     spktrainPred(i,:) = locatorPred;
+    spktrainPredNoisy(i,:) = locatorPredNoisy;
+    spktrainPredRand(i,:) = locatorRand;
+
 end
 
 
@@ -261,21 +276,37 @@ return
 
 
 
-function [locatorPred] = noiseFreeAddSpikesSpikePrediction(locator, locatorPred)
+function [locatorRand, ratio] = noiseFreeAddSpikesSpikePrediction(locator, locatorPred, percent)
 
-    % Noise-free analysis
-    % Try multiple thresholds to find the one that matches the actual spike count
-%     thr = linspace(0, max(probPred), 100);
-    nPredSpk = zeros(size(thr));
-    for j = 1:length(thr)
-        predSpk = probPred > thr(j);
-        nPredSpk(j) = sum(predSpk);
-    end % (for j)
 
-    % Find threshold that matches overall spike count of original train
-    d = abs(nPredSpk - sum(locator));
-    indMin = find(d == min(d),1);
-    locatorPred = probPred > thr(indMin);
+% Find spikes in spike train
+index = 1:length(locator);
+
+indexSpikes = find(locatorPred > 0); % index for spikes
+
+[locatorPred(indexSpikes(:)) indexSpikes(:)];
+
+length(indexSpikes);
+
+
+% Bins without spikes
+indexOpen = setdiff(index, indexSpikes);
+
+% Random subset of bins without spikes
+ip = randperm(length(indexOpen), ceil(percent*sum(locator)));
+indexRandSpk = sort(indexOpen(ip)); % index for random spikes
+
+% Indices for real spikes and random spikes
+indexTotal = [indexSpikes(:)' indexRandSpk(:)'];
+
+% Randomly select from total set of indices
+ip = randperm(length(indexTotal), sum(locator));
+
+% Assign spikes based on random sampling of indices
+locatorRand = zeros(size(locator));
+locatorRand(indexTotal(ip)) = 1;
+
+ratio = length(indexSpikes) / length(indexTotal);
 
 return;
 
@@ -311,7 +342,6 @@ function [locatorPred] = noisySpikePrediction(probPred, locator, thr)
     randVals = rand(size(probPred,1),1);
     for j = 1:length(thr)
         predSpk = (randVals+thr(j)) < probPred;
-        predSpk = probPred > thr(j);
         nPredSpk(j) = sum(predSpk);
     end % (for j)
 
