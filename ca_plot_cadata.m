@@ -51,7 +51,9 @@ correlationmat = corr(Activitymatrix');
 % Set diagonal to zero
 correlationmat = diag2zero(correlationmat);
 
-pause
+
+
+
 
 figure;
 
@@ -166,11 +168,11 @@ set(0,'defaulttextinterpreter','none')
 suptitle(sprintf('Bin size = %.1f ms', cadata.df / cadata.fsdvd * 1000));
 
 
-% for i = 1:size(Patterns,2)
-%     figure;
-%     stem(Patterns(:,i));
-%     title(sprintf('Ind Comp #%.0f', i));
-% end
+for i = 1:size(Patterns,2)
+    figure;
+    stem(Patterns(:,i));
+    title(sprintf('Ind Comp #%.0f', i));
+end
 
 
 return;

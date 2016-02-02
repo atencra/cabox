@@ -14,9 +14,8 @@ function [cadata] = ca_calc_cell_assembly(spk, stimulus, trigger, FsDVD, DF)
 %     neuron, the cell assembly patterns, and the cell assembly activities.
 %
 %     This function does not calculate the STAs from the spike trains. To
-%     calculate the STAs, use the function ca_calc_cell_assembly_sta.m
-
-% Make sure there are 5 input arguments.
+%     calculate the STAs, use the function 
+%        ca_calc_cell_assembly_sta_from_spk_stimulus_trigger
 narginchk(5,5);
 
 % Get spike train matrix.

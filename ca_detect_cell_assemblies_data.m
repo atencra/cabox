@@ -1,7 +1,7 @@
 function [Patterns, Activities] = ca_detect_cell_assemblies_data(Activitymatrix)
-% detecting_cell_assemblies_data Cell assembly detection using PCA/ICA
+% ca_detecting_cell_assemblies_data Cell assembly detection using PCA/ICA
 % 
-%     detecting_cell_assemblies_toy_code(Activitymatrix) estimates the cell
+%     ca_detecting_cell_assemblies_toy_code(Activitymatrix) estimates the cell
 %     assemblies from the spike train matrix Activitymatrix.
 %
 %     Activitymatrix : spike train matrix. m x n matrix. m = number of neurons, n = number of

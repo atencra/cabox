@@ -19,7 +19,7 @@ function [cadata] = ca_calc_cell_assembly_sta_from_spk_stimulus_trigger(spk, sti
 %     [5, 10, 20, 40, or 100]. 
 %
 %     Therefore, the totalDF would be 48 * [5, 10, 20, 40, or 100], which
-%     is equivalent to 5ms, 10ms, etc. for 96 kHz sound stimulus sampling
+%     is equivalent to 2.5 ms, 5 ms, etc. for 96 kHz sound stimulus sampling
 %     rate.
 %
 %     cadata : struct holding calculations. Has the form:
