@@ -1,4 +1,4 @@
-function [w, chi2, pval, wuc] = kendallw(x)
+function [w, chi2, pval] = kendallw(x)
 % kendallw  Compute the Kendall's coefficient of concordance, W, of the matrix X.
 % 
 %     [w, chi2, pval] = kendallw(x)

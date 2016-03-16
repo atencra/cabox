@@ -21,6 +21,8 @@ function ca_plot_cell_assembly_stamat(stamat, nf, nlags, datatype)
 %     stamat and ca_stamat are fields of cadata.
 %
 
+library('strfbox');
+
 narginchk(3,4);
 
 if ( nargin == 3 )
