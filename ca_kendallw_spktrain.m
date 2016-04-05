@@ -1,4 +1,4 @@
-function ca_kendallw_spktrain(spkmat)
+function [w, chi2, pval] = ca_kendallw_spktrain(spkmat)
 
 [nrows, ncols] = size(spkmat);
 
@@ -7,6 +7,6 @@ if ( ncols > nrows )
     spkmat = spkmat';
 end
 
-[w, chi2, pval] = kendallw(spkmat)
+[w, chi2, pval] = kendallw(spkmat);
 
 return;

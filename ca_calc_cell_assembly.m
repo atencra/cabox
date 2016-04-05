@@ -1,7 +1,7 @@
 function [cadata] = ca_calc_cell_assembly(spk, stimulus, trigger, FsDVD, DF)
-% cell_assembly_sta Estimate PCA/ICA cell assembly analysis
+% ca_calc_cell_assemblyEstimate PCA/ICA cell assembly analysis
 % 
-%     [cadata] = cell_assembly_sta(spk, stimulus, trigger, FsDVD, DF)
+%     [cadata] = ca_calc_cell_assembly(spk, stimulus, trigger, FsDVD, DF)
 %     --------------------------------------------------------------
 %     spk : struct array of spike times. Obtaines from saveSpikeSort.m
 %     stimulus : ripple stimulus in matrix format
@@ -16,6 +16,8 @@ function [cadata] = ca_calc_cell_assembly(spk, stimulus, trigger, FsDVD, DF)
 %     This function does not calculate the STAs from the spike trains. To
 %     calculate the STAs, use the function 
 %        ca_calc_cell_assembly_sta_from_spk_stimulus_trigger
+
+
 narginchk(5,5);
 
 % Get spike train matrix.

@@ -25,7 +25,14 @@ trigger = trigger - mintime + 1;
 % Ntrials = NT*numtrig; % newnt=320;
 Ntrials = size(stimulus, 2);
 NT = Ntrials / length(trigger);
+
+if ( mod(Ntrials, length(trigger) ) )
+    error('Stim length not divisible by trigger length. stimulus and spk mismatch.');
+end
+
+
 locator = zeros(Ntrials,1);
+
 
 for trigcount = 2:length(trigger)-1 % skips spikes between 1st and 2nd trigger
 

@@ -1,8 +1,11 @@
-function [spktrain_matrix, position] = ca_create_spktrain_matrix_from_stimulus_spk(spk, stimulus, trigger, FsDVD, totalDF)
+function [spktrain_matrix, position] = ...
+    ca_create_spktrain_matrix_from_stimulus_spk(spk, stimulus, trigger, ...
+        FsDVD, totalDF)
 % ca_create_spktrain_matrix_from_stimulus_spk Neuron spike time activity matrix
 % 
 %     [spktrain_matrix, position] = ...
-%         ca_create_spktrain_matrix_from_stimulus_spk(spk, stimulus, trigger, FsDVD, totalDF)
+%         ca_create_spktrain_matrix_from_stimulus_spk(spk, stimulus, trigger, ...
+%               FsDVD, totalDF)
 % 
 %     Creates a matrix of binned spike trains. Each row represents one neuron,
 %     and each column is a time bin. Spike times are obtained from the spk
@@ -40,7 +43,7 @@ for i = 1:length(spk)
     spktimes = spk(i).spiketimes; % spike times from SpikeSort - in ms
     FsAD = spk(i).fs; % A/D system sampling rate
     spet = spktimes / 1000 * FsAD; % convert to sample number
-    spktimes = spktimes - trigger(1)/FsAD*1000; % align to trigger, convert to ms
+    %spktimes = spktimes - trigger(1)/FsAD*1000; % align to trigger, convert to ms
     [locator] = ca_ripple_stim_spktrain(stimulus, spet, trigger, FsAD, FsDVD, totalDF);
     spktrain_matrix(i,:) = locator;
     position{i} = num2str(spk(i).position);
