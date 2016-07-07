@@ -31,10 +31,10 @@ end
 spkmat = cadata.spktrain;
 position = cadata.position;
 dt = cadata.df / cadata.fsdvd * 1000; % spike train bin size, in ms
-
+dt = 10;
 
 spkmat = cadata.spktrain;
-spkmat = spkmat(1:25,:);
+%spkmat = spkmat(1:25,:);
 nedata = ca_spkmatrix_to_ensembles(spkmat);
 ensembles = nedata.ensembles;
 evals = nedata.eigenvalues;
@@ -50,6 +50,11 @@ corrmat = diag2zero(corrmat);
 
 figure;
 
+
+for startx = 0:100:234000
+
+clf;
+
 % Plot the pairwise correlations
 subplot(2,3,1);
 imagesc(corrmat);
@@ -59,6 +64,15 @@ if ( isempty(position) )
 else
     tick = 1:length(position);
     pos = zeros(size(tick));
+
+    if ( ~iscell(position) )
+        for i = 1:size(position,1)
+            temp{i} = num2str(position(i,end)); 
+        end % (if)
+        position = temp;
+        clear('temp');
+    end % (if)
+
     for i = 1:length(position)
         pos(i) = str2num(position{i});
     end
@@ -83,13 +97,16 @@ tickpref;
 % Plot the spike train matrix
 subplot(2,3,[2 3]); 
 zSpikeCount = zscore(spkmat')';
-index_raster = round(linspace(1,size(zSpikeCount,1),25));
-zSpikeCount = zSpikeCount(index_raster,:);
+index_raster = 1:size(zSpikeCount,1);
+%index_raster = round(linspace(1,size(zSpikeCount,1),25));
+%zSpikeCount = zSpikeCount(index_raster,:);
 position_vec = position(index_raster);
+zSpikeCount(zSpikeCount>20) = 20;
 imagesc(zSpikeCount);
 
+
 % imagesc(Activitymatrix);
-xlim([startx startx+500]);
+xlim([startx startx+100]);
 if ( isempty(position_vec) )
     ylabel('Neuron #');
 else
@@ -104,7 +121,7 @@ set(gca, 'xtick', xtick, 'xticklabel', xticklabel);
 tickpref;
 mn = totalmin(zSpikeCount);
 mx = 0.75*totalmax(zSpikeCount);
-cmap = brewmaps('reds', 19);
+cmap = brewmaps('reds', 35);
 cmap = flipud(cmap);
 cmap = [1 1 1; cmap];
 colormap(cmap);
@@ -135,7 +152,7 @@ set(gca,'xtick', 1:size(nedata.ensembles,2), 'xticklabel', 1:size(nedata.ensembl
 % Plot the activities of the cell assemblies / time course of cell assembly activity
 subplot(2,3,[5 6]);
 plot(Activities');
-xlim([startx startx+500]);
+xlim([startx startx+100]);
 % minmin = min( min(Activities,[], 1) )
 % maxmax = max( max(Activities,[], 1) )
 % ylim([minmin maxmax]);
@@ -145,7 +162,7 @@ tickpref;
 [~, nc] = size(Activities');
 if ( nc > 0 )
     for i = 1:nc
-        leg{i} = num2str(i);
+        leg{i} = sprintf('NE #%s', num2str(i));
     end
 %     legend(leg,'Location', 'Best');
     hl = legend(leg);
@@ -157,7 +174,8 @@ set(gca, 'xtick', xtick, 'xticklabel', xticklabel);
 set(gcf,'position', [100 100 1121 620]);
 
 set(0,'defaulttextinterpreter','none')
-suptitle(sprintf('Bin size = %.1f ms', cadata.df / cadata.fsdvd * 1000));
+suptitle(sprintf('Bin size = %.1f ms', dt));
+
 
 
 
@@ -189,6 +207,7 @@ xlabel('Eigenvalue #');
 ylabel('Eigenvalue');
 
 tickpref;
+set(gcf,'position', [1272 568 560 420]);
 
 
 
